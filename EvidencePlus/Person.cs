@@ -6,29 +6,11 @@ using System.Threading.Tasks;
 
 namespace EvidencePlus
 {
-    public class Person
+    public struct Person
     {
-        public Person() { }
-        public Person(Person person)
-        {
-            Name = person.Name;
-            Surname = person.Surname;
-        }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            Person person;
-            if ((person = obj as Person) != null)
-            {
-
-                return
-                    Name == person.Name &&
-                    Surname == person.Surname;
-            }
-            
-            return base.Equals(obj);
-        }
+        public string birth_number1;
+        public string birth_number2;
+        public string name;
+        public string surname;
     }
 }
