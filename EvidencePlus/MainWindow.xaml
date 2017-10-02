@@ -11,49 +11,41 @@
             <ListBox x:Name="peopleListBox" SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding People}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Name"/>
-                                    <Binding Path="Surname"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="Surname"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Button Click="Button_Click">Smazat</Button>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Border>
         <Border Grid.Column="2" Width="200" Padding="6">
-            <StackPanel>
+            <StackPanel DataContext="{Binding Current}">
                 <TextBlock>Jméno</TextBlock>
-                <TextBox Text="{Binding Current.Name}"></TextBox>
+                <TextBox Text="{Binding Name}"></TextBox>
                 <TextBlock>Příjmení</TextBlock>
-                <TextBox Text="{Binding Current.Surname}"></TextBox>
+                <TextBox Text="{Binding Surname}"></TextBox>
                 <TextBlock>Pohlaví</TextBlock>
-                <ComboBox SelectedIndex="{Binding GenderIndex}">
+                <ComboBox SelectedIndex="{Binding Gender}">
                     <TextBlock>Muž</TextBlock>
                     <TextBlock>Žena</TextBlock>
                 </ComboBox>
                 <TextBlock>Datum Narození</TextBlock>
-                <DatePicker SelectedDate="{Binding Current.BirthDate, Mode=TwoWay}"></DatePicker>
+                <DatePicker SelectedDate="{Binding BirthDate, Mode=TwoWay}" DisplayDateStart="1900-01-01" DisplayDateEnd="{Binding Today, Mode=OneWay}"></DatePicker>
                 <TextBlock>Rodné Číslo</TextBlock>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Width="60" Text="{Binding Current.BirthNumber1}"></TextBox>
+                    <ComboBox SelectedIndex="{Binding BirthNumber1Index}" ItemsSource="{Binding BirthNumber1Options}" SelectedItem="{Binding BirthNumber1}"></ComboBox>
                     <TextBlock>/</TextBlock>
-                    <TextBox Width="40" Text="{Binding Current.BirthNumber2}"></TextBox>
+                    <TextBox Width="40" Text="{Binding BirthNumber2}"></TextBox>
                 </StackPanel>
-                <Button x:Name="saveButton" Click="saveButton_Click">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Content" Value="Uložit změny"></Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentIndex}" Value="-1">
-                                    <Setter Property="Content" Value="Přidat"></Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <Button x:Name="saveButton" Click="saveButton_Click">Uložit</Button>
             </StackPanel>
         </Border>
         <Grid.ColumnDefinitions>

@@ -23,6 +23,7 @@ namespace EvidencePlus
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public DateTime Today => DateTime.Now;
         public List<PersonVM> People { get; set; }
         public int CurrentIndex
         {
@@ -35,12 +36,6 @@ namespace EvidencePlus
         }
         int _currentIndex = -1;
 
-        public int GenderIndex
-        {
-            get => (int)Current.Gender;
-            set => Current.Gender = (Gender)value;
-        }
-
         public PersonVM Current
         {
             get => _current;
@@ -48,7 +43,6 @@ namespace EvidencePlus
             {
                 _current = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Current)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GenderIndex)));
             }
         }
 
@@ -65,7 +59,7 @@ namespace EvidencePlus
             return people.Select(person => new PersonVM(person)).ToList();
         }
 
-        PersonVM _current = new PersonVM(new Person());
+        PersonVM _current = new PersonVM();
         public MainWindow()
         {
             InitializeComponent();
@@ -84,25 +78,42 @@ namespace EvidencePlus
             }
             else
             {
-                Current = new PersonVM(new Person());
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GenderIndex)));
-
+                Current = new PersonVM();
             }
+        }
+
+        void SavePerson(Person person)
+        {
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/" + person.birth_number1 + "/" + person.birth_number2);
+            var req = new RestRequest(Method.PUT);
+            req.AddParameter("name", person.name);
+            req.AddParameter("surname", person.surname);
+
+            var res = client.Execute(req);
+            People = GetPeople();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(People)));
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentIndex == -1)
+            if (Current.person.birth_number2 == null || Current.person.birth_number2.Length == 0)
             {
-                People.Add(Current);
-                CurrentIndex = People.Count - 1;
+                MessageBox.Show("Neplatné rodné číslo");
+                return;
             }
-            else
-            {
-                var i = CurrentIndex;
-                People[CurrentIndex] = Current;
-                CurrentIndex = i;
-            }
+            SavePerson(Current.person);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var person = (PersonVM)button.DataContext;
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/"+ person.person.birth_number1 + "/" + person.person.birth_number2);
+            var req = new RestRequest(Method.DELETE);
+
+            var res = client.Execute(req);
+            People = GetPeople();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(People)));
         }
     }
 }
