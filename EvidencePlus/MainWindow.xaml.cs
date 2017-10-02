@@ -98,12 +98,18 @@ namespace EvidencePlus
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Current.person.birth_number2 == null || Current.person.birth_number2.Length == 0)
+            if (Current.person.birth_number2 != null && Current.person.birth_number1 != null)
             {
-                MessageBox.Show("Neplatné rodné číslo");
-                return;
+                if ((Current.BirthDate.Year >= 1954 && Current.person.birth_number2.Length == 4) ||
+                    (Current.BirthDate.Year < 1954 && Current.person.birth_number2.Length == 3))
+                {
+                    SavePerson(Current.person);
+                    return;
+                }
             }
-            SavePerson(Current.person);
+
+            MessageBox.Show("Neplatné rodné číslo");
+            return;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

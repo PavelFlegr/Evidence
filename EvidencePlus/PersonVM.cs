@@ -123,6 +123,8 @@ namespace EvidencePlus
             set => person.birth_number2 = value;
         }
 
+        public string BirthNumber => BirthNumber1 + "/" + BirthNumber2;
+
         public DateTime Today => DateTime.Now;
     }
 }

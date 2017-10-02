@@ -8,7 +8,21 @@
         Title="MainWindow" Height="500" Width="800">
     <Grid x:Name="addPersonButton">
         <Border>
-            <ListBox x:Name="peopleListBox" SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding People}">
+            <ListView x:Name="peopleListBox" SelectedIndex="{Binding CurrentIndex, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged" ItemsSource="{Binding People}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Rodné číslo" DisplayMemberBinding="{Binding BirthNumber}"/>
+                        <GridViewColumn Header="Jméno" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="Příjmení" DisplayMemberBinding="{Binding Surname}"/>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <ItemContainerTemplate>
+                                    <Button Click="Button_Click">Smazat</Button>
+                                </ItemContainerTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -24,7 +38,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-            </ListBox>
+            </ListView>
         </Border>
         <Border Grid.Column="2" Width="200" Padding="6">
             <StackPanel>
