@@ -27,25 +27,38 @@
             </ListBox>
         </Border>
         <Border Grid.Column="2" Width="200" Padding="6">
-            <StackPanel DataContext="{Binding Current}">
-                <TextBlock>Jméno</TextBlock>
-                <TextBox Text="{Binding Name}"></TextBox>
-                <TextBlock>Příjmení</TextBlock>
-                <TextBox Text="{Binding Surname}"></TextBox>
-                <TextBlock>Pohlaví</TextBlock>
-                <ComboBox SelectedIndex="{Binding Gender}">
-                    <TextBlock>Muž</TextBlock>
-                    <TextBlock>Žena</TextBlock>
-                </ComboBox>
-                <TextBlock>Datum Narození</TextBlock>
-                <DatePicker SelectedDate="{Binding BirthDate, Mode=TwoWay}" DisplayDateStart="1900-01-01" DisplayDateEnd="{Binding Today, Mode=OneWay}"></DatePicker>
-                <TextBlock>Rodné Číslo</TextBlock>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox SelectedIndex="{Binding BirthNumber1Index}" ItemsSource="{Binding BirthNumber1Options}" SelectedItem="{Binding BirthNumber1}"></ComboBox>
-                    <TextBlock>/</TextBlock>
-                    <TextBox Width="40" Text="{Binding BirthNumber2}"></TextBox>
+            <StackPanel>
+                <StackPanel DataContext="{Binding Current}">
+                    <TextBlock>Jméno</TextBlock>
+                    <TextBox Text="{Binding Name}"></TextBox>
+                    <TextBlock>Příjmení</TextBlock>
+                    <TextBox Text="{Binding Surname}"></TextBox>
+                    <TextBlock>Pohlaví</TextBlock>
+                    <ComboBox SelectedIndex="{Binding Gender}">
+                        <TextBlock>Muž</TextBlock>
+                        <TextBlock>Žena</TextBlock>
+                    </ComboBox>
+                    <TextBlock>Datum Narození</TextBlock>
+                    <DatePicker SelectedDate="{Binding BirthDate, Mode=TwoWay}" DisplayDateStart="1900-01-01" DisplayDateEnd="{Binding Today, Mode=OneWay}"></DatePicker>
+                    <TextBlock>Rodné Číslo</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox SelectedIndex="{Binding BirthNumber1Index}" ItemsSource="{Binding BirthNumber1Options}" SelectedItem="{Binding BirthNumber1}"></ComboBox>
+                        <TextBlock>/</TextBlock>
+                        <TextBox Width="40" Text="{Binding BirthNumber2}"></TextBox>
+                    </StackPanel>
                 </StackPanel>
-                <Button x:Name="saveButton" Click="saveButton_Click">Uložit</Button>
+                <Button x:Name="saveButton" Click="saveButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Uložit změny"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentIndex}" Value="-1">
+                                    <Setter Property="Content" Value="Přidat"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </Border>
         <Grid.ColumnDefinitions>

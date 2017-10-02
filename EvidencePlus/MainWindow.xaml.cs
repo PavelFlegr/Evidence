@@ -84,8 +84,10 @@ namespace EvidencePlus
 
         void SavePerson(Person person)
         {
-            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/" + person.birth_number1 + "/" + person.birth_number2);
-            var req = new RestRequest(Method.PUT);
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/" + (CurrentIndex != -1 ? person.id.ToString() : ""));
+            var req = new RestRequest(CurrentIndex == -1 ? Method.POST : Method.PUT);
+            req.AddParameter("birth_number1", person.birth_number1);
+            req.AddParameter("birth_number2", person.birth_number2);
             req.AddParameter("name", person.name);
             req.AddParameter("surname", person.surname);
 
@@ -108,7 +110,7 @@ namespace EvidencePlus
         {
             var button = (Button)sender;
             var person = (PersonVM)button.DataContext;
-            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/"+ person.person.birth_number1 + "/" + person.person.birth_number2);
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/"+ person.person.id);
             var req = new RestRequest(Method.DELETE);
 
             var res = client.Execute(req);
