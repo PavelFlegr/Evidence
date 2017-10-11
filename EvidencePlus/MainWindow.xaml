@@ -40,7 +40,7 @@
                 </ListBox.ItemTemplate>
             </ListView>
         </Border>
-        <Border Grid.Column="2" Width="200" Padding="6">
+        <Border Grid.Column="2" Grid.RowSpan="2" Width="200" Padding="6">
             <StackPanel>
                 <StackPanel DataContext="{Binding Current}">
                     <TextBlock>Jméno</TextBlock>
@@ -75,9 +75,21 @@
                 </Button>
             </StackPanel>
         </Border>
+        <Grid Grid.Row="1">
+            <TextBox Text="{Binding Search}"></TextBox>
+            <Button x:Name="searchButton" Click="searchButton_Click" Grid.Column="1"  HorizontalAlignment="Right">Hledat rodné číslo</Button>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
     </Grid>
 </Window>

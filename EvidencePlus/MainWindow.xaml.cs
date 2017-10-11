@@ -23,6 +23,7 @@ namespace EvidencePlus
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public string Search { get; set; }
         public DateTime Today => DateTime.Now;
         public List<PersonVM> People { get; set; }
         public int CurrentIndex
@@ -46,10 +47,11 @@ namespace EvidencePlus
             }
         }
 
-        public List<PersonVM> GetPeople()
+        public List<PersonVM> GetPeople(string uri = "")
         {
-            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/");
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/");
             var req = new RestRequest(Method.GET);
+            req.AddParameter("birth_number", uri);
             var res = client.Execute<List<Person>>(req);
             var people = res.Data;
             if (people == null)
@@ -121,6 +123,12 @@ namespace EvidencePlus
 
             var res = client.Execute(req);
             People = GetPeople();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(People)));
+        }
+
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            People = GetPeople(Search);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(People)));
         }
     }
