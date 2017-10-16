@@ -49,7 +49,7 @@ namespace EvidencePlus
 
         public List<PersonVM> GetPeople(string uri = "")
         {
-            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/index.php/");
+            var client = new RestClient("https://student.sps-prosek.cz/~flegrpa14/evidence/");
             var req = new RestRequest(Method.GET);
             req.AddParameter("birth_number", uri);
             var res = client.Execute<List<Person>>(req);
@@ -93,7 +93,12 @@ namespace EvidencePlus
             req.AddParameter("name", person.name);
             req.AddParameter("surname", person.surname);
 
+
             var res = client.Execute(req);
+            if (res.Content == "23000")
+            {
+                MessageBox.Show("Uživatel s tímto rodným číslem byl již přidán");
+            }
             People = GetPeople();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(People)));
         }
